@@ -1,0 +1,1518 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Penjelasan Detail SETIAP BARIS Kode Assembly Thermostat</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: white;
+            color: #333;
+            padding: 30px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border: 3px solid #000;
+            padding: 40px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #000;
+            margin-bottom: 10px;
+            font-size: 28px;
+            border-bottom: 3px solid #000;
+            padding-bottom: 15px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+            font-style: italic;
+        }
+        
+        h2 {
+            color: #fff;
+            background: #0066cc;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-size: 22px;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        th {
+            background: #0066cc;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+            border: 2px solid #0052a3;
+        }
+        
+        td {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            vertical-align: top;
+        }
+        
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        
+        tr:hover {
+            background: #e6f3ff;
+        }
+        
+        .code {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 13px;
+            display: inline-block;
+        }
+        
+        .line-num {
+            background: #666;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 3px;
+            font-weight: bold;
+            display: inline-block;
+            min-width: 40px;
+            text-align: center;
+        }
+        
+        .comment {
+            color: #28a745;
+            font-style: italic;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .analogy-box {
+            background: #d4edda;
+            border-left: 5px solid #28a745;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 3px;
+        }
+        
+        .label-header {
+            background: #ffc107 !important;
+            color: #000 !important;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .print-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 24px;
+            background: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            z-index: 1000;
+        }
+        
+        .print-btn:hover {
+            background: #0052a3;
+        }
+
+        .summary-box {
+            background: #fff3cd;
+            border: 3px solid #ffc107;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+
+        .summary-box h3 {
+            color: #856404;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .summary-box ul {
+            margin-left: 20px;
+        }
+
+        .summary-box li {
+            margin: 8px 0;
+        }
+        
+        @media print {
+            .print-btn {
+                display: none;
+            }
+            body {
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="print-btn" onclick="window.print()">🖨️ Print / Save PDF</button>
+    
+    <div class="container">
+        <h1>📝 PENJELASAN LENGKAP SEMUA BARIS KODE ASSEMBLY THERMOSTAT</h1>
+        <p class="subtitle">Setiap Baris dari Thermostat.asm Dijelaskan dengan Detail dan Analogi Mudah Dipahami</p>
+
+        <div class="summary-box">
+            <h3>📌 Ringkasan Program Thermostat</h3>
+            <ul>
+                <li><strong>Fungsi Utama:</strong> Mengontrol suhu ruangan secara otomatis dengan AC dan Heater</li>
+                <li><strong>Port A (0080H):</strong> Output untuk mengendalikan AC/Heater</li>
+                <li><strong>Port B (0082H):</strong> Input dari sensor suhu</li>
+                <li><strong>Port C (0084H):</strong> Input dari tombol START/STOP</li>
+                <li><strong>Logika:</strong> Jika suhu ≥17°C → Nyalakan AC | Jika suhu ≤11°C → Nyalakan Heater | Jika 11-17°C → Matikan semua</li>
+            </ul>
+        </div>
+
+        <h2>🚀 BAGIAN 1: SETUP AWAL (Baris 1-8)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 8%;">Baris</th>
+                    <th style="width: 25%;">Kode</th>
+                    <th style="width: 35%;">Penjelasan Teknis</th>
+                    <th style="width: 32%;">Analogi Sederhana</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="line-num">1</span></td>
+                    <td><span class="comment">;Thermostat</span></td>
+                    <td><strong>Komentar</strong> - Tidak dieksekusi, hanya catatan untuk programmer</td>
+                    <td>
+                        <div class="analogy-box">
+                            💬 Seperti judul buku: "Program Thermostat". Processor tidak membaca ini, cuma untuk manusia.
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">2</span></td>
+                    <td><em>(kosong)</em></td>
+                    <td><strong>Baris kosong</strong> - Diabaikan oleh processor</td>
+                    <td><div class="analogy-box">📄 Spasi antar paragraf supaya kode lebih rapi dan mudah dibaca</div></td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">3</span></td>
+                    <td><span class="code">org 100h</span></td>
+                    <td>Program dimulai dari <strong>alamat memori 100h (256 desimal)</strong>. Ini menentukan di mana kode disimpan di memori</td>
+                    <td>
+                        <div class="analogy-box">
+                            🏠 "Robot, kamu tinggal dan mulai bekerja dari alamat 100h di memori"
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">4</span></td>
+                    <td><span class="code">CONTROL EQU 8006H</span></td>
+                    <td>Definisi konstanta: <strong>CONTROL = 8006H</strong>. Label ini tidak dipakai dalam program ini, mungkin untuk pengembangan future</td>
+                    <td>
+                        <div class="analogy-box">
+                            📋 Memberi nama "CONTROL" untuk alamat 8006H. Seperti memberi nama "Kantor Pusat" pada gedung (tapi belum dipakai).
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">5</span></td>
+                    <td><span class="code">A EQU 0080H</span></td>
+                    <td>Definisi konstanta: <strong>A = 0080H</strong>. Port A adalah port OUTPUT untuk mengendalikan aktuator (AC/Heater)</td>
+                    <td>
+                        <div class="analogy-box">
+                            🔌 Label "A" = Colokan OUTPUT untuk menyalakan AC dan Heater di alamat 0080H
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">6</span></td>
+                    <td><span class="code">B EQU 0082H</span></td>
+                    <td>Definisi konstanta: <strong>B = 0082H</strong>. Port B adalah port INPUT untuk membaca nilai dari sensor suhu</td>
+                    <td>
+                        <div class="analogy-box">
+                            🌡️ Label "B" = Termometer (sensor suhu) di alamat 0082H
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">7</span></td>
+                    <td><span class="code">C EQU 0084H</span></td>
+                    <td>Definisi konstanta: <strong>C = 0084H</strong>. Port C adalah port INPUT untuk membaca tombol kontrol (START/STOP)</td>
+                    <td>
+                        <div class="analogy-box">
+                            🔘 Label "C" = Tombol ON/OFF dari pengguna di alamat 0084H
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">8</span></td>
+                    <td><em>(kosong)</em></td>
+                    <td>Baris kosong untuk pemisah</td>
+                    <td><div class="analogy-box">📄 Spasi sebelum kode program utama dimulai</div></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>🏁 BAGIAN 2: LABEL inic1 - MENUNGGU PERINTAH START (Baris 9-21)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 8%;">Baris</th>
+                    <th style="width: 25%;">Kode</th>
+                    <th style="width: 35%;">Penjelasan Teknis</th>
+                    <th style="width: 32%;">Analogi Sederhana</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="label-header">
+                    <td colspan="4">📍 LABEL: inic1 (Inisialisasi - Mode Standby Menunggu Perintah START)</td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">9</span></td>
+                    <td><span class="code">inic1:</span></td>
+                    <td><strong>Label "inic1"</strong> - Penanda lokasi dalam kode. Program dapat melompat ke sini dari bagian manapun</td>
+                    <td>
+                        <div class="analogy-box">
+                            🏷️ Papan nama "Pos Standby". Robot bisa kembali ke sini kapan saja untuk menunggu perintah.
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">10</span></td>
+                    <td><em>(kosong)</em></td>
+                    <td>Baris kosong</td>
+                    <td><div class="analogy-box">📄 Spasi untuk memperjelas struktur kode</div></td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">11</span></td>
+                    <td><em>(kosong)</em></td>
+                    <td>Baris kosong</td>
+                    <td><div class="analogy-box">📄 Spasi</div></td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">12</span></td>
+                    <td><em>(kosong)</em></td>
+                    <td>Baris kosong</td>
+                    <td><div class="analogy-box">📄 Spasi</div></td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">13</span></td>
+                    <td><span class="code">mov dx,C</span></td>
+                    <td>Salin nilai <strong>C (0084H)</strong> ke register <strong>DX</strong>. Menyiapkan DX untuk mengakses Port C</td>
+                    <td>
+                        <div class="analogy-box">
+                            📝 Robot catat di notes (DX): "Aku akan cek tombol di Port C (alamat 0084H)"
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">14</span></td>
+                    <td><span class="code">in al,dx</span></td>
+                    <td>Baca data dari port yang alamatnya ada di DX (Port C), simpan hasilnya ke register <strong>AL</strong></td>
+                    <td>
+                        <div class="analogy-box">
+                            🚪 Robot buka Port C, lihat tombol apa yang ditekan user, simpan kodenya di tangan (AL)
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">15</span></td>
+                    <td><span class="code">cmp al,11111110b</span></td>
+                    <td>Bandingkan nilai di AL dengan <strong>11111110b (254 desimal = FEh)</strong>. Ini adalah kode tombol STOP</td>
+                    <td>
+                        <div class="analogy-box">
+                            🔍 Robot cek: "Apakah user menekan tombol STOP (kode 254)?"
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">16</span></td>
+                    <td><span class="code">je stop1</span></td>
+                    <td><strong>Jump if Equal</strong> - Jika hasil perbandingan SAMA (AL = 254), lompat ke label <strong>stop1</strong></td>
+                    <td>
+                        <div class="analogy-box">
+                            🏃 Kalau iya tombol STOP, langsung lompat ke ruangan "stop1" untuk shutdown total!
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">17</span></td>
+                    <td><span class="code">cmp al,11111101b</span></td>
+                    <td>Bandingkan nilai di AL dengan <strong>11111101b (253 desimal = FDh)</strong>. Ini adalah kode tombol START</td>
+                    <td>
+                        <div class="analogy-box">
+                            🔍 Robot cek lagi: "Atau apakah user menekan tombol START (kode 253)?"
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">18</span></td>
+                    <td><span class="code">je decision</span></td>
+                    <td><strong>Jump if Equal</strong> - Jika hasil perbandingan SAMA (AL = 253), lompat ke label <strong>decision</strong></td>
+                    <td>
+                        <div class="analogy-box">
+                            🏃 Kalau iya tombol START, langsung ke ruangan "decision" untuk mulai cek suhu dan bekerja!
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">19</span></td>
+                    <td><span class="code">jmp inic1</span></td>
+                    <td><strong>Jump (tanpa syarat)</strong> - Lompat kembali ke label <strong>inic1</strong>. Membuat loop infinite</td>
+                    <td>
+                        <div class="analogy-box">
+                            🔄 Kalau bukan STOP dan bukan START, kembali ke baris 9. Terus tunggu sampai dapat perintah jelas!
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">20</span></td>
+                    <td><em>(kosong)</em></td>
+                    <td>Baris kosong</td>
+                    <td><div class="analogy-box">📄 Spasi pemisah sebelum label berikutnya</div></td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">21</span></td>
+                    <td><em>(kosong)</em></td>
+                    <td>Baris kosong</td>
+                    <td><div class="analogy-box">📄 Spasi</div></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>🌡️ BAGIAN 3: LABEL decision - BACA SUHU DAN PUTUSKAN AKSI (Baris 22-36)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 8%;">Baris</th>
+                    <th style="width: 25%;">Kode</th>
+                    <th style="width: 35%;">Penjelasan Teknis</th>
+                    <th style="width: 32%;">Analogi Sederhana</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="label-header">
+                    <td colspan="4">📍 LABEL: decision (Baca Sensor Suhu & Putuskan Tindakan)</td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">22</span></td>
+                    <td><span class="code">decision:</span></td>
+                    <td><strong>Label "decision"</strong> - Tempat untuk membaca suhu dan memutuskan aksi apa yang harus dilakukan</td>
+                    <td>
+                        <div class="analogy-box">
+                            🏷️ Papan nama "Ruang Pengambilan Keputusan"
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">23</span></td>
+                    <td><em>(kosong)</em></td>
+                    <td>Baris kosong</td>
+                    <td><div class="analogy-box">📄 Spasi</div></td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">24</span></td>
+                    <td><em>(kosong)</em></td>
+                    <td>Baris kosong</td>
+                    <td><div class="analogy-box">📄 Spasi</div></td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">25</span></td>
+                    <td><em>(kosong)</em></td>
+                    <td>Baris kosong</td>
+                    <td><div class="analogy-box">📄 Spasi</div></td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">26</span></td>
+                    <td><span class="code">mov dx,B</span></td>
+                    <td>Salin nilai <strong>B (0082H)</strong> ke register <strong>DX</strong>. Menyiapkan DX untuk akses Port B (sensor suhu)</td>
+                    <td>
+                        <div class="analogy-box">
+                            📝 Robot catat: "Sekarang aku akan ambil termometer di Port B (0082H)"
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">27</span></td>
+                    <td><span class="code">in al,dx</span></td>
+                    <td>Baca nilai suhu dari Port B, simpan ke register <strong>AL</strong></td>
+                    <td>
+                        <div class="analogy-box">
+                            🌡️ Robot baca termometer, catat suhunya di AL. Contoh: AL = 20 (artinya 20°C)
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">28</span></td>
+                    <td><span class="code">cmp al,00010001b</span></td>
+                    <td>Bandingkan suhu di AL dengan <strong>00010001b (17 desimal)</strong>. Ini adalah batas atas suhu nyaman</td>
+                    <td>
+                        <div class="analogy-box">
+                            🔍 Robot mikir: "Hmm, suhunya berapa ya? Bandingkan dengan batas panas 17°C"
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">29</span></td>
+                    <td><span class="code">jge enfriar</span></td>
+                    <td><strong>Jump if Greater or Equal</strong> - Jika AL ≥ 17, lompat ke label <strong>enfriar</strong></td>
+                    <td>
+                        <div class="analogy-box">
+                            🏃 Kalau suhu ≥ 17°C (kepanasan!), lompat ke ruangan "enfriar" untuk nyalakan AC!
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">30</span></td>
+                    <td><span class="code">cmp al,00001011b</span></td>
+                    <td>Bandingkan suhu di AL dengan <strong>00001011b (11 desimal)</strong>. Ini adalah batas bawah suhu nyaman</td>
+                    <td>
+                        <div class="analogy-box">
+                            🔍 Robot cek lagi: "Atau apakah suhunya lebih dingin dari 11°C?"
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">31</span></td>
+                    <td><span class="code">jle warm</span></td>
+                    <td><strong>Jump if Less or Equal</strong> - Jika AL ≤ 11, lompat ke label <strong>warm</strong></td>
+                    <td>
+                        <div class="analogy-box">
+                            🏃 Kalau suhu ≤ 11°C (kedinginan!), lompat ke ruangan "warm" untuk nyalakan heater!
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">32</span></td>
+                    <td><span class="code">jmp stop</span></td>
+                    <td><strong>Jump</strong> - Lompat ke label <strong>stop</strong>. Dieksekusi kalau suhu antara 11-17°C (zona nyaman)</td>
+                    <td>
+                        <div class="analogy-box">
+                            🏃 Kalau suhu 11-17°C (pas enak, nyaman!), ke ruangan "stop" untuk matikan semua (hemat energi!)
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">33</span></td>
+                    <td><em>(kosong)</em></td>
+                    <td>Baris kosong</td>
+                    <td><div class="analogy-box">📄 Spasi</div></td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">34</span></td>
+                    <td><em>(kosong)</em></td>
+                    <td>Baris kosong</td>
+                    <td><div class="analogy-box">📄 Spasi</div></td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">35</span></td>
+                    <td><em>(kosong)</em></td>
+                    <td>Baris kosong</td>
+                    <td><div class="analogy-box">📄 Spasi</div></td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">36</span></td>
+                    <td><em>(kosong)</em></td>
+                    <td>Baris kosong</td>
+                    <td><div class="analogy-box">📄 Spasi sebelum label berikutnya</div></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>❄️ BAGIAN 4: LABEL enfriar - NYALAKAN AC (Baris 37-49)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 8%;">Baris</th>
+                    <th style="width: 25%;">Kode</th>
+                    <th style="width: 35%;">Penjelasan Teknis</th>
+                    <th style="width: 32%;">Analogi Sederhana</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="label-header">
+                    <td colspan="4">📍 LABEL: enfriar (Nyalakan Pendingin/AC)</td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">37</span></td>
+                    <td><span class="code">enfriar:</span></td>
+                    <td><strong>Label "enfriar"</strong> (bahasa Spanyol = "mendinginkan")</td>
+                    <td>
+                        <div class="analogy-box">
+                            🏷️ Papan nama "Ruang Pendinginan - AC Zone"
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">38</span></td>
+                    <td><em>(kosong)</em></td>
+                    <td>Baris kosong</td>
+                    <td><div class="analogy-box">📄 Spasi</div></td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">39</span></td>
+                    <td><span class="code">mov dx,A</span></td>
+                    <td>Salin nilai <strong>A (0080H)</strong> ke register <strong>DX</strong>. Menyiapkan untuk akses Port A (output aktuator)</td>
+                    <td>
+                        <div class="analogy-box">
+                            📝 Robot catat: "Aku mau tekan tombol AC di Port A (0080H)"
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">40</span></td>
+                    <td><span class="code">mov al,11111110b</span></td>
+                    <td>Masukkan kode <strong>11111110b (254 = FEh)</strong> ke register <strong>AL</strong>. Ini adalah kode perintah untuk menyalakan AC</td>
+                    <td>
+                        <div class="analogy-box">
+                            🔑 Robot pegang kunci rahasia: "11111110 = Kode untuk nyalakan AC"
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">41</span></td>
+                    <td><span class="code">out dx,al</span></td>
+                    <td>Kirim data di AL ke port yang alamatnya di DX (Port A). <strong>AC MENYALA SEKARANG!</strong></td>
+                    <td>
+                        <div class="analogy-box">
+                            ❄️ Robot kirim kode ke Port A → AC langsung NYALA! Ruangan mulai dingin!
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">42</span></td>
+                    <td><em>(kosong)</em></td>
+                    <td>Baris kosong</td>
+                    <td><div class="analogy-box">📄 Spasi</div></td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">43</span></td>
+                    <td><em>(kosong)</em></td>
+                    <td>Baris kosong</td>
+                    <td><div class="analogy-box">📄 Spasi</div></td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">44</span></td>
+                    <td><span class="code">nop</span></td>
+                    <td><strong>No Operation</strong> - Tunggu 1 siklus clock tanpa melakukan apapun. Delay kecil</td>
+                    <td>
+                        <div class="analogy-box">
+                            ⏱️ Robot diam sebentar: "1..." (kasih waktu AC untuk menyala sempurna)
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">45</span></td>
+                    <td><span class="code">nop</span></td>
+                    <td>Tunggu 1 siklus clock lagi</td>
+                    <td>
+                        <div class="analogy-box">
+                            ⏱️ Robot diam lagi: "2..."
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">46</span></td>
+                    <td><span class="code">nop</span></td>
+                    <td>Tunggu 1 siklus clock lagi. Total delay 3 siklus clock</td>
+                    <td>
+                        <div class="analogy-box">
+                            ⏱️ Robot diam lagi: "3!" (AC sudah stabil nyalanya)
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">47</span></td>
+                    <td><em>(kosong)</em></td>
+                    <td>Baris kosong</td>
+                    <td><div class="analogy-box">📄 Spasi</div></td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">48</span></td>
+                    <td><span class="code">jmp emergency</span></td>
+                    <td><strong>Jump</strong> - Lompat ke label <strong>emergency</strong> untuk mode monitoring kontinu</td>
+                    <td>
+                        <div class="analogy-box">
+                            🏃 AC sudah nyala, sekarang masuk mode "emergency" (awasi terus kalau user mau stop!)
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">49</span></td>
+                    <td><em>(kosong)</em></td>
+                    <td>Baris kosong</td>
+                    <td><div class="analogy-box">📄 Spasi</div></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>🔥 BAGIAN 5: LABEL warm - NYALAKAN HEATER (Baris 50-62)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 8%;">Baris</th>
+                    <th style="width: 25%;">Kode</th>
+                    <th style="width: 35%;">Penjelasan Teknis</th>
+                    <th style="width: 32%;">Analogi Sederhana</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="label-header">
+                    <td colspan="4">📍 LABEL: warm (Nyalakan Pemanas/Heater)</td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">50</span></td>
+                    <td><span class="code">warm:</span></td>
+                    <td><strong>Label "warm"</strong> (bahasa Inggris = "hangat/menghangatkan")</td>
+                    <td>
+                        <div class="analogy-box">
+                            🏷️ Papan nama "Ruang Pemanasan - Heater Zone"
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">51</span></td>
+                    <td><em>(kosong)</em></td>
+                    <td>Baris kosong</td>
+                    <td><div class="analogy-box">📄 Spasi</div></td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">52</span></td>
+                    <td><span class="code">mov dx,A</span></td>
+                    <td>Salin nilai <strong>A (0080H)</strong> ke register <strong>DX</strong>. Menyiapkan untuk akses Port A</td>
+                    <td>
+                        <div class="analogy-box">
+                            📝 Robot catat: "Aku mau tekan tombol Heater di Port A (0080H)"
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">53</span></td>
+                    <td><span class="code">mov al,11111101b</span></td>
+                    <td>Masukkan kode <strong>11111101b (253 = FDh)</strong> ke register <strong>AL</strong>. Ini adalah kode perintah untuk menyalakan Heater</td>
+                    <td>
+                        <div class="analogy-box">
+                            🔑 Robot pegang kunci: "11111101 = Kode untuk nyalakan Heater"
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">54</span></td>
+                    <td><span class="code">out dx,al</span></td>
+                    <td>Kirim data di AL ke Port A. <strong>HEATER MENYALA SEKARANG!</strong></td>
+                    <td>
+                        <div class="analogy-box">
+                            🔥 Robot kirim kode ke Port A → Heater langsung NYALA! Ruangan mulai hangat!
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">55</span></td>
+                    <td><em>(kosong)</em></td>
+                    <td>Baris kosong</td>
+                    <td><div class="analogy-box">📄 Spasi</div></td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">56</span></td>
+                    <td><em>(kosong)</em></td>
+                    <td>Baris kosong</td>
+                    <td><div class="analogy-box">📄 Spasi</div></td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">57</span></td>
+                    <td><span class="code">nop</span></td>
+                    <td><strong>No Operation</strong> - Delay 1 siklus</td>
+                    <td>
+                        <div class="analogy-box">
+                            ⏱️ Robot diam: "1..."
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">58</span></td>
+                    <td><span class="code">nop</span></td>
+                    <td>Delay 1 siklus lagi</td>
+                    <td>
+                        <div class="analogy-box">
+                            ⏱️ Robot diam: "2..."
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">59</span></td>
+                    <td><span class="code">nop</span></td>
+                    <td>Delay 1 siklus lagi</td>
+                    <td>
+                        <div class="analogy-box">
+                            ⏱️ Robot diam: "3..."
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">60</span></td>
+                    <td><span class="code">nop</span></td>
+                    <td>Delay 1 siklus lagi. Total delay 4 siklus (lebih lama dari AC karena heater butuh waktu lebih lama untuk stabil)</td>
+                    <td>
+                        <div class="analogy-box">
+                            ⏱️ Robot diam: "4!" (Heater sudah stabil, lebih lama dari AC)
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">61</span></td>
+                    <td><em>(kosong)</em></td>
+                    <td>Baris kosong</td>
+                    <td><div class="analogy-box">📄 Spasi</div></td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">62</span></td>
+                    <td><span class="code">jmp emergency</span></td>
+                    <td><strong>Jump</strong> - Lompat ke label <strong>emergency</strong> untuk monitoring</td>
+                    <td>
+                        <div class="analogy-box">
+                            🏃 Heater sudah nyala, masuk mode "emergency" (awasi kalau user mau stop!)
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>⏸️ BAGIAN 6: LABEL stop - MATIKAN SEMUA (Suhu Nyaman) (Baris 63-78)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 8%;">Baris</th>
+                    <th style="width: 25%;">Kode</th>
+                    <th style="width: 35%;">Penjelasan Teknis</th>
+                    <th style="width: 32%;">Analogi Sederhana</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="label-header">
+                    <td colspan="4">📍 LABEL: stop (Matikan AC & Heater - Suhu Nyaman)</td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">63</span></td>
+                    <td><span class="code">stop:</span></td>
+                    <td><strong>Label "stop"</strong> - Tempat untuk mematikan semua aktuator ketika suhu sudah nyaman (11-17°C)</td>
+                    <td>
+                        <div class="analogy-box">
+                            🏷️ Papan nama "Ruang Hemat Energi - Semua Mati"
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">64</span></td>
+                    <td><em>(kosong)</em></td>
+                    <td>Baris kosong</td>
+                    <td><div class="analogy-box">📄 Spasi</div></td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">65</span></td>
+                    <td><span class="code">mov dx,A</span></td>
+                    <td>Salin nilai <strong>A (0080H)</strong> ke DX untuk akses Port A</td>
+                    <td>
+                        <div class="analogy-box">
+                            📝 Robot catat: "Aku mau matikan semua di Port A"
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">66</span></td>
+                    <td><span class="code">mov al,11111111b</span></td>
+                    <td>Masukkan kode <strong>11111111b (255 = FFh)</strong> ke AL. Ini adalah kode untuk mematikan AC DAN Heater</td>
+                    <td>
+                        <div class="analogy-box">
+                            🔑 Robot pegang kunci: "11111111 = Kode untuk matikan semua alat"
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">67</span></td>
+                    <td><span class="code">out dx,al</span></td>
+                    <td>Kirim kode OFF ke Port A. <strong>AC & HEATER MATI SEKARANG!</strong></td>
+                    <td>
+                        <div class="analogy-box">
+                            💤 Robot kirim kode → AC dan Heater langsung MATI! Hemat listrik karena suhu sudah pas!
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">68</span></td>
+                    <td><em>(kosong)</em></td>
+                    <td>Baris kosong</td>
+                    <td><div class="analogy-box">📄 Spasi</div></td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">69</span></td>
+                    <td><em>(kosong)</em></td>
+                    <td>Baris kosong</td>
+                    <td><div class="analogy-box">📄 Spasi</div></td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">70</span></td>
+                    <td><span class="code">nop</span></td>
+                    <td>Delay 1 siklus</td>
+                    <td>
+                        <div class="analogy-box">
+                            ⏱️ Robot diam: "1..."
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">71</span></td>
+                    <td><span class="code">nop</span></td>
+                    <td>Delay 1 siklus</td>
+                    <td>
+                        <div class="analogy-box">
+                            ⏱️ Robot diam: "2..."
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">72</span></td>
+                    <td><span class="code">nop</span></td>
+                    <td>Delay 1 siklus. Total 3 siklus delay</td>
+                    <td>
+                        <div class="analogy-box">
+                            ⏱️ Robot diam: "3!" (Semua sudah mati sempurna)
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">73</span></td>
+                    <td><em>(kosong)</em></td>
+                    <td>Baris kosong</td>
+                    <td><div class="analogy-box">📄 Spasi</div></td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">74</span></td>
+                    <td><em>(kosong)</em></td>
+                    <td>Baris kosong</td>
+                    <td><div class="analogy-box">📄 Spasi</div></td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">75</span></td>
+                    <td><em>(kosong)</em></td>
+                    <td>Baris kosong</td>
+                    <td><div class="analogy-box">📄 Spasi</div></td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">76</span></td>
+                    <td><span class="code">mov dx,B</span></td>
+                    <td>Salin nilai B ke DX untuk akses Port B (sensor suhu)</td>
+                    <td>
+                        <div class="analogy-box">
+                            📝 Robot catat: "Aku akan cek suhu lagi di Port B"
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">77</span></td>
+                    <td><span class="code">in al,dx</span></td>
+                    <td>Baca suhu terbaru dari sensor, simpan ke AL</td>
+                    <td>
+                        <div class="analogy-box">
+                            🌡️ Robot baca termometer lagi: "Suhunya sekarang berapa ya?"
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">78</span></td>
+                    <td><span class="code">cmp al,00010001b</span></td>
+                    <td>Bandingkan suhu dengan 17 (batas atas)</td>
+                    <td>
+                        <div class="analogy-box">
+                            🔍 Robot cek: "Apakah sekarang ≥ 17°C?"
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>🔄 BAGIAN 7: LANJUTAN stop - LOOP MONITORING (Baris 79-82)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 8%;">Baris</th>
+                    <th style="width: 25%;">Kode</th>
+                    <th style="width: 35%;">Penjelasan Teknis</th>
+                    <th style="width: 32%;">Analogi Sederhana</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="line-num">79</span></td>
+                    <td><span class="code">jge enfriar</span></td>
+                    <td>Jika suhu ≥ 17, lompat ke <strong>enfriar</strong> (nyalakan AC lagi)</td>
+                    <td>
+                        <div class="analogy-box">
+                            🏃 Kalau jadi panas lagi ≥ 17°C, nyalakan AC lagi!
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">80</span></td>
+                    <td><span class="code">cmp al,00001011b</span></td>
+                    <td>Bandingkan suhu dengan 11 (batas bawah)</td>
+                    <td>
+                        <div class="analogy-box">
+                            🔍 Robot cek: "Atau apakah jadi ≤ 11°C?"
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">81</span></td>
+                    <td><span class="code">jle warm</span></td>
+                    <td>Jika suhu ≤ 11, lompat ke <strong>warm</strong> (nyalakan heater lagi)</td>
+                    <td>
+                        <div class="analogy-box">
+                            🏃 Kalau jadi dingin lagi ≤ 11°C, nyalakan heater lagi!
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">82</span></td>
+                    <td><span class="code">jmp stop</span></td>
+                    <td>Lompat kembali ke <strong>stop</strong> - membuat loop untuk terus monitor suhu selama masih di zona nyaman</td>
+                    <td>
+                        <div class="analogy-box">
+                            🔄 Kalau suhu masih 11-17°C, balik lagi ke "stop" (terus monitor, semua tetap mati)
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>🛑 BAGIAN 8: LABEL stop1 - SHUTDOWN TOTAL (Baris 83-95)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 8%;">Baris</th>
+                    <th style="width: 25%;">Kode</th>
+                    <th style="width: 35%;">Penjelasan Teknis</th>
+                    <th style="width: 32%;">Analogi Sederhana</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="label-header">
+                    <td colspan="4">📍 LABEL: stop1 (Shutdown Total - User Tekan STOP)</td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">83</span></td>
+                    <td><em>(kosong)</em></td>
+                    <td>Baris kosong</td>
+                    <td><div class="analogy-box">📄 Spasi</div></td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">84</span></td>
+                    <td><span class="code">stop1:</span></td>
+                    <td><strong>Label "stop1"</strong> - Mode shutdown total ketika user menekan tombol STOP</td>
+                    <td>
+                        <div class="analogy-box">
+                            🏷️ Papan nama "Ruang Shutdown Total - Darurat Mati!"
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">85</span></td>
+                    <td><em>(kosong)</em></td>
+                    <td>Baris kosong</td>
+                    <td><div class="analogy-box">📄 Spasi</div></td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">86</span></td>
+                    <td><span class="code">mov dx,A</span></td>
+                    <td>Salin nilai A ke DX</td>
+                    <td>
+                        <div class="analogy-box">
+                            📝 Robot catat: "Aku harus matikan semua di Port A!"
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">87</span></td>
+                    <td><span class="code">mov al,11111111b</span></td>
+                    <td>Masukkan kode OFF (255) ke AL</td>
+                    <td>
+                        <div class="analogy-box">
+                            🔑 Robot pegang kunci OFF: "11111111"
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">88</span></td>
+                    <td><span class="code">out dx,al</span></td>
+                    <td>Kirim kode OFF ke Port A - <strong>MATIKAN SEMUA!</strong></td>
+                    <td>
+                        <div class="analogy-box">
+                            🛑 Robot matikan total semua alat! AC mati! Heater mati! Semua STOP!
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">89</span></td>
+                    <td><em>(kosong)</em></td>
+                    <td>Baris kosong</td>
+                    <td><div class="analogy-box">📄 Spasi</div></td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">90</span></td>
+                    <td><em>(kosong)</em></td>
+                    <td>Baris kosong</td>
+                    <td><div class="analogy-box">📄 Spasi</div></td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">91</span></td>
+                    <td><span class="code">nop</span></td>
+                    <td>Delay 1 siklus</td>
+                    <td>
+                        <div class="analogy-box">
+                            ⏱️ Robot diam: "1..."
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">92</span></td>
+                    <td><span class="code">nop</span></td>
+                    <td>Delay 1 siklus</td>
+                    <td>
+                        <div class="analogy-box">
+                            ⏱️ Robot diam: "2..."
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">93</span></td>
+                    <td><span class="code">nop</span></td>
+                    <td>Delay 1 siklus</td>
+                    <td>
+                        <div class="analogy-box">
+                            ⏱️ Robot diam: "3!" (Semuanya sudah mati total)
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">94</span></td>
+                    <td><em>(kosong)</em></td>
+                    <td>Baris kosong</td>
+                    <td><div class="analogy-box">📄 Spasi</div></td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">95</span></td>
+                    <td><em>(kosong)</em></td>
+                    <td>Baris kosong</td>
+                    <td><div class="analogy-box">📄 Spasi</div></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>👀 BAGIAN 9: LANJUTAN stop1 - CEK TOMBOL (Baris 96-102)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 8%;">Baris</th>
+                    <th style="width: 25%;">Kode</th>
+                    <th style="width: 35%;">Penjelasan Teknis</th>
+                    <th style="width: 32%;">Analogi Sederhana</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="line-num">96</span></td>
+                    <td><span class="code">mov dx,C</span></td>
+                    <td>Salin nilai C ke DX untuk akses Port C (tombol)</td>
+                    <td>
+                        <div class="analogy-box">
+                            📝 Robot catat: "Aku akan cek tombol di Port C"
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">97</span></td>
+                    <td><span class="code">in al,dx</span></td>
+                    <td>Baca status tombol dari Port C</td>
+                    <td>
+                        <div class="analogy-box">
+                            🔘 Robot cek: "User tekan tombol apa sekarang?"
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">98</span></td>
+                    <td><span class="code">cmp al,11111110b</span></td>
+                    <td>Bandingkan dengan kode STOP (254)</td>
+                    <td>
+                        <div class="analogy-box">
+                            🔍 Robot cek: "Apakah masih tombol STOP?"
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">99</span></td>
+                    <td><span class="code">je stop1</span></td>
+                    <td>Jika masih STOP, tetap di <strong>stop1</strong> (loop di sini)</td>
+                    <td>
+                        <div class="analogy-box">
+                            🔄 Kalau masih STOP, tetap di sini (semua tetap mati, tunggu perintah baru)
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">100</span></td>
+                    <td><span class="code">cmp al,11111101b</span></td>
+                    <td>Bandingkan dengan kode START (253)</td>
+                    <td>
+                        <div class="analogy-box">
+                            🔍 Robot cek: "Atau apakah user tekan START?"
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">101</span></td>
+                    <td><span class="code">je inic1</span></td>
+                    <td>Jika START ditekan, lompat ke <strong>inic1</strong> untuk mulai ulang dari awal</td>
+                    <td>
+                        <div class="analogy-box">
+                            🏃 Kalau user tekan START, kembali ke "inic1" (restart dari awal, siap kerja lagi!)
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">102</span></td>
+                    <td><span class="code">jmp stop1</span></td>
+                    <td>Lompat kembali ke stop1 - loop sampai dapat perintah jelas</td>
+                    <td>
+                        <div class="analogy-box">
+                            🔄 Kalau bukan STOP dan bukan START, balik lagi (tunggu terus sampai jelas)
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>🚨 BAGIAN 10: LABEL emergency - MODE MONITORING DARURAT (Baris 103-117)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 8%;">Baris</th>
+                    <th style="width: 25%;">Kode</th>
+                    <th style="width: 35%;">Penjelasan Teknis</th>
+                    <th style="width: 32%;">Analogi Sederhana</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="label-header">
+                    <td colspan="4">📍 LABEL: emergency (Mode Siaga - Awasi Tombol Saat AC/Heater Nyala)</td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">103</span></td>
+                    <td><em>(kosong)</em></td>
+                    <td>Baris kosong</td>
+                    <td><div class="analogy-box">📄 Spasi</div></td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">104</span></td>
+                    <td><span class="code">emergency:</span></td>
+                    <td><strong>Label "emergency"</strong> - Mode monitoring ketika AC atau Heater sedang menyala. Mengawasi tombol STOP dari user</td>
+                    <td>
+                        <div class="analogy-box">
+                            🏷️ Papan nama "Mode Siaga Darurat - Awasi Tombol!"
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">105</span></td>
+                    <td><em>(kosong)</em></td>
+                    <td>Baris kosong</td>
+                    <td><div class="analogy-box">📄 Spasi</div></td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">106</span></td>
+                    <td><em>(kosong)</em></td>
+                    <td>Baris kosong</td>
+                    <td><div class="analogy-box">📄 Spasi</div></td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">107</span></td>
+                    <td><em>(kosong)</em></td>
+                    <td>Baris kosong</td>
+                    <td><div class="analogy-box">📄 Spasi</div></td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">108</span></td>
+                    <td><span class="code">mov dx,C</span></td>
+                    <td>Salin nilai C ke DX untuk akses Port C (tombol kontrol)</td>
+                    <td>
+                        <div class="analogy-box">
+                            📝 Robot catat: "Aku harus awasi tombol di Port C, jaga-jaga kalau user mau stop"
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">109</span></td>
+                    <td><span class="code">in al,dx</span></td>
+                    <td>Baca status tombol dari Port C, simpan ke AL</td>
+                    <td>
+                        <div class="analogy-box">
+                            🔘 Robot cek tombol: "User tekan apa sekarang?"
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">110</span></td>
+                    <td><span class="code">cmp al,11111110b</span></td>
+                    <td>Bandingkan dengan kode STOP (254)</td>
+                    <td>
+                        <div class="analogy-box">
+                            🔍 Robot cek: "Apakah user menekan tombol STOP?"
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">111</span></td>
+                    <td><span class="code">je stop1</span></td>
+                    <td>Jika STOP ditekan, lompat ke <strong>stop1</strong> untuk shutdown total</td>
+                    <td>
+                        <div class="analogy-box">
+                            🏃 Kalau user tekan STOP, lompat ke "stop1" (matikan total semua, masuk mode shutdown!)
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">112</span></td>
+                    <td><span class="code">cmp al,11111101b</span></td>
+                    <td>Bandingkan dengan kode START (253)</td>
+                    <td>
+                        <div class="analogy-box">
+                            🔍 Robot cek: "Atau apakah user tekan START lagi?"
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">113</span></td>
+                    <td><span class="code">je inic1</span></td>
+                    <td>Jika START ditekan (lagi), lompat ke <strong>inic1</strong> untuk restart</td>
+                    <td>
+                        <div class="analogy-box">
+                            🏃 Kalau user tekan START lagi, restart ke "inic1" (mulai dari awal lagi)
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">114</span></td>
+                    <td><span class="code">jmp decision</span></td>
+                    <td>Jika tidak ada tombol ditekan, lompat ke <strong>decision</strong> untuk cek suhu lagi dan lanjutkan operasi normal</td>
+                    <td>
+                        <div class="analogy-box">
+                            🔄 Kalau tidak ada tombol ditekan, kembali ke "decision" (cek suhu lagi, lanjut kerja normal!)
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">115</span></td>
+                    <td><em>(kosong)</em></td>
+                    <td>Baris kosong</td>
+                    <td><div class="analogy-box">📄 Spasi</div></td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">116</span></td>
+                    <td><span class="code">ret</span></td>
+                    <td><strong>Return</strong> - Kembali dari subroutine. Dalam kasus ini, mengakhiri program</td>
+                    <td>
+                        <div class="analogy-box">
+                            🏁 Perintah "SELESAI" - Robot berhenti bekerja dan istirahat (program selesai)
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="line-num">117</span></td>
+                    <td><em>(kosong)</em></td>
+                    <td>Baris kosong - akhir dari file</td>
+                    <td><div class="analogy-box">📄 Akhir file program</div></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="summary-box" style="background: #d1ecf1; border-color: #0c5460;">
+            <h3>🎯 RINGKASAN ALUR KERJA PROGRAM (Flow Chart Logic)</h3>
+            <ol style="margin-left: 20px; line-height: 2;">
+                <li><strong>START</strong> → Program dimulai di baris 9 (inic1)</li>
+                <li><strong>inic1:</strong> Tunggu user tekan tombol
+                    <ul style="margin-left: 20px;">
+                        <li>Jika STOP (254) → Lompat ke stop1 (shutdown total)</li>
+                        <li>Jika START (253) → Lompat ke decision (mulai kerja)</li>
+                        <li>Jika tidak ada → Loop kembali ke inic1</li>
+                    </ul>
+                </li>
+                <li><strong>decision:</strong> Baca sensor suhu dari Port B
+                    <ul style="margin-left: 20px;">
+                        <li>Jika suhu ≥ 17°C → Lompat ke enfriar (AC ON)</li>
+                        <li>Jika suhu ≤ 11°C → Lompat ke warm (Heater ON)</li>
+                        <li>Jika suhu 11-17°C → Lompat ke stop (Semua OFF)</li>
+                    </ul>
+                </li>
+                <li><strong>enfriar:</strong> Kirim kode 254 ke Port A → AC NYALA → Lompat ke emergency</li>
+                <li><strong>warm:</strong> Kirim kode 253 ke Port A → HEATER NYALA → Lompat ke emergency</li>
+                <li><strong>stop:</strong> Kirim kode 255 ke Port A → SEMUA MATI → Loop monitoring suhu
+                    <ul style="margin-left: 20px;">
+                        <li>Terus cek suhu, jika berubah keluar zona nyaman → Nyalakan AC/Heater lagi</li>
+                    </ul>
+                </li>
+                <li><strong>stop1:</strong> Mode shutdown total (user tekan STOP)
+                    <ul style="margin-left: 20px;">
+                        <li>Matikan semua → Loop tunggu perintah START atau tetap STOP</li>
+                    </ul>
+                </li>
+                <li><strong>emergency:</strong> Mode monitoring saat AC/Heater nyala
+                    <ul style="margin-left: 20px;">
+                        <li>Awasi tombol → Jika STOP → stop1, Jika START → inic1</li>
+                        <li>Jika tidak ada tombol → Kembali ke decision (cek suhu lagi)</li>
+                    </ul>
+                </li>
+                <li><strong>ret:</strong> Program selesai</li>
+            </ol>
+        </div>
+
+        <div class="summary-box" style="background: #f8d7da; border-color: #721c24;">
+            <h3>🔑 KODE-KODE PENTING (Code Reference)</h3>
+            <table style="width: 100%; margin-top: 15px; box-shadow: none;">
+                <tr style="background: #fff;">
+                    <td style="border: 1px solid #ddd; padding: 10px;"><strong>Kode Biner</strong></td>
+                    <td style="border: 1px solid #ddd; padding: 10px;"><strong>Desimal</strong></td>
+                    <td style="border: 1px solid #ddd; padding: 10px;"><strong>Hex</strong></td>
+                    <td style="border: 1px solid #ddd; padding: 10px;"><strong>Fungsi</strong></td>
+                </tr>
+                <tr style="background: #ffe6e6;">
+                    <td style="border: 1px solid #ddd; padding: 10px;"><span class="code">11111110b</span></td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">254</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">FEh</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">Tombol STOP / Perintah AC ON</td>
+                </tr>
+                <tr style="background: #fff;">
+                    <td style="border: 1px solid #ddd; padding: 10px;"><span class="code">11111101b</span></td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">253</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">FDh</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">Tombol START / Perintah Heater ON</td>
+                </tr>
+                <tr style="background: #ffe6e6;">
+                    <td style="border: 1px solid #ddd; padding: 10px;"><span class="code">11111111b</span></td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">255</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">FFh</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">Perintah MATIKAN SEMUA (AC & Heater OFF)</td>
+                </tr>
+                <tr style="background: #fff;">
+                    <td style="border: 1px solid #ddd; padding: 10px;"><span class="code">00010001b</span></td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">17</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">11h</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">Batas atas suhu (≥17°C = Panas → AC ON)</td>
+                </tr>
+                <tr style="background: #ffe6e6;">
+                    <td style="border: 1px solid #ddd; padding: 10px;"><span class="code">00001011b</span></td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">11</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">0Bh</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">Batas bawah suhu (≤11°C = Dingin → Heater ON)</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="summary-box" style="background: #cce5ff; border-color: #004085;">
+            <h3>📊 PORT DAN FUNGSINYA</h3>
+            <table style="width: 100%; margin-top: 15px; box-shadow: none;">
+                <tr style="background: #fff;">
+                    <td style="border: 1px solid #ddd; padding: 10px;"><strong>Port</strong></td>
+                    <td style="border: 1px solid #ddd; padding: 10px;"><strong>Alamat</strong></td>
+                    <td style="border: 1px solid #ddd; padding: 10px;"><strong>Tipe</strong></td>
+                    <td style="border: 1px solid #ddd; padding: 10px;"><strong>Fungsi</strong></td>
+                </tr>
+                <tr style="background: #e6f2ff;">
+                    <td style="border: 1px solid #ddd; padding: 10px;"><strong>Port A</strong></td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">0080H</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">OUTPUT</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">Mengendalikan AC dan Heater (aktuator)</td>
+                </tr>
+                <tr style="background: #fff;">
+                    <td style="border: 1px solid #ddd; padding: 10px;"><strong>Port B</strong></td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">0082H</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">INPUT</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">Membaca nilai dari sensor suhu</td>
+                </tr>
+                <tr style="background: #e6f2ff;">
+                    <td style="border: 1px solid #ddd; padding: 10px;"><strong>Port C</strong></td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">0084H</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">INPUT</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">Membaca tombol kontrol (START/STOP) dari user</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="summary-box" style="background: #e2e3e5; border-color: #383d41;">
+            <h3>💡 INSTRUKSI ASSEMBLY YANG DIGUNAKAN</h3>
+            <ul style="margin-left: 20px; line-height: 2;">
+                <li><strong>MOV dx,value</strong> - Salin nilai ke register DX (menyiapkan alamat port)</li>
+                <li><strong>IN al,dx</strong> - Baca data dari port (alamat di DX), simpan ke AL</li>
+                <li><strong>OUT dx,al</strong> - Kirim data dari AL ke port (alamat di DX)</li>
+                <li><strong>CMP al,value</strong> - Bandingkan nilai di AL dengan value</li>
+                <li><strong>JE label</strong> - Jump if Equal (lompat jika sama)</li>
+                <li><strong>JGE label</strong> - Jump if Greater or Equal (lompat jika ≥)</li>
+                <li><strong>JLE label</strong> - Jump if Less or Equal (lompat jika ≤)</li>
+                <li><strong>JMP label</strong> - Jump tanpa syarat (lompat pasti)</li>
+                <li><strong>NOP</strong> - No Operation (tunggu/delay 1 siklus clock)</li>
+                <li><strong>RET</strong> - Return (kembali/selesai)</li>
+                <li><strong>EQU</strong> - Definisi konstanta (memberi nama untuk alamat)</li>
+                <li><strong>ORG 100h</strong> - Set alamat awal program di memori</li>
+            </ul>
+        </div>
+
+        <div class="summary-box" style="background: #fff3cd; border-color: #856404;">
+            <h3>✨ KESIMPULAN</h3>
+            <p style="font-size: 16px; line-height: 1.8;">
+                Program thermostat ini adalah sistem kontrol suhu otomatis yang cerdas. Program membaca suhu dari sensor (Port B), 
+                mengambil keputusan berdasarkan ambang batas (11°C dan 17°C), lalu mengendalikan AC atau Heater melalui Port A. 
+                Program juga responsif terhadap perintah user melalui tombol START/STOP di Port C.
+            </p>
+            <p style="font-size: 16px; line-height: 1.8; margin-top: 10px;">
+                <strong>Total:</strong> 117 baris kode (termasuk baris kosong dan komentar)<br>
+                <strong>Bahasa:</strong> Assembly x86 (8086/8088)<br>
+                <strong>Konsep:</strong> Embedded System Control Loop dengan State Machine
+            </p>
+        </div>
+
+    </div>
+
+    <script>
+        console.log("📝 Penjelasan Lengkap Thermostat.asm - Total 117 baris telah dijelaskan!");
+    </script>
+</body>
+</html>

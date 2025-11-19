@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Penjelasan Kode Assembly Thermostat</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: white;
+            color: #333;
+            padding: 30px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border: 3px solid #000;
+            padding: 40px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #000;
+            margin-bottom: 10px;
+            font-size: 28px;
+            border-bottom: 3px solid #000;
+            padding-bottom: 15px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+            font-style: italic;
+        }
+        
+        h2 {
+            color: #0066cc;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-size: 22px;
+            border-left: 5px solid #0066cc;
+            padding-left: 15px;
+        }
+        
+        h3 {
+            color: #009933;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        th {
+            background: #0066cc;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+            border: 2px solid #0052a3;
+        }
+        
+        td {
+            padding: 15px;
+            border: 1px solid #ddd;
+            vertical-align: top;
+        }
+        
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        
+        tr:hover {
+            background: #e6f3ff;
+        }
+        
+        .code {
+            background: #f5f5f5;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #d63384;
+            font-weight: bold;
+            border: 1px solid #ddd;
+        }
+        
+        .register-box {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .port-box {
+            background: #d1ecf1;
+            border: 2px solid #0dcaf0;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .analogy-box {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .warning-box {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .icon {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+        
+        .example {
+            background: #e7f3ff;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid #0066cc;
+            border-radius: 3px;
+        }
+        
+        ul, ol {
+            margin: 15px 0;
+            padding-left: 30px;
+        }
+        
+        li {
+            margin: 8px 0;
+        }
+        
+        .print-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 24px;
+            background: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            z-index: 1000;
+        }
+        
+        .print-btn:hover {
+            background: #0052a3;
+        }
+        
+        @media print {
+            .print-btn {
+                display: none;
+            }
+            body {
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="print-btn" onclick="window.print()">🖨️ Print / Save PDF</button>
+    
+    <div class="container">
+        <h1>📚 PENJELASAN DETAIL KODE ASSEMBLY THERMOSTAT</h1>
+        <p class="subtitle">Panduan Lengkap dengan Analogi Sederhana untuk Pemula</p>
+        
+        <div class="register-box">
+            <h3><span class="icon">🗂️</span>Apa itu Register?</h3>
+            <p><strong>Register</strong> adalah <strong>tempat penyimpanan sementara</strong> di dalam processor (otak komputer). Seperti <strong>tangan robot</strong> yang memegang sesuatu sementara waktu.</p>
+            <ul>
+                <li><span class="code">AL</span> = Register kecil (8 bit) untuk menyimpan data sementara</li>
+                <li><span class="code">DX</span> = Register untuk menyimpan alamat port yang akan diakses</li>
+            </ul>
+        </div>
+        
+        <div class="port-box">
+            <h3><span class="icon">🔌</span>Apa itu Port?</h3>
+            <p><strong>Port</strong> adalah <strong>pintu komunikasi</strong> antara processor dengan perangkat luar (sensor, aktuator, dll). Seperti <strong>colokan listrik</strong> di dinding rumah.</p>
+            <ul>
+                <li><span class="code">Port A (0080H)</span> = Pintu untuk mengirim sinyal ke AC/Heater</li>
+                <li><span class="code">Port B (0082H)</span> = Pintu untuk membaca sensor suhu</li>
+                <li><span class="code">Port C (0084H)</span> = Pintu untuk membaca tombol ON/OFF</li>
+            </ul>
+        </div>
+
+        <h2>📋 TABEL PENJELASAN SETIAP INSTRUKSI</h2>
+        
+        <h3>1️⃣ Instruksi MOV (Move = Pindahkan)</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 20%;">Kode</th>
+                    <th style="width: 40%;">Penjelasan Teknis</th>
+                    <th style="width: 40%;">Analogi Sederhana</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="code">mov dx,C</span></td>
+                    <td>
+                        Salin nilai <strong>C (0084H)</strong> ke dalam register <strong>DX</strong><br><br>
+                        <strong>C</strong> adalah nama lain dari alamat port <span class="code">0084H</span><br>
+                        Setelah instruksi ini, <strong>DX = 0084H</strong>
+                    </td>
+                    <td>
+                        <div class="analogy-box">
+                            🎯 <strong>Analogi:</strong><br>
+                            Robot menerima perintah: <em>"Hai Robot, kamu akan buka pintu nomor C (alamat 0084H). Nah, tulis dulu alamatnya di notes kamu (register DX)!"</em><br><br>
+                            Kayak Anda mau buka pintu rumah, tapi harus catat dulu nomor pintunya: "Pintu C ada di alamat 0084H"
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="code">mov dx,A</span></td>
+                    <td>
+                        Salin nilai <strong>A (0080H)</strong> ke dalam register <strong>DX</strong><br><br>
+                        Setelah ini, <strong>DX = 0080H</strong><br>
+                        Siap untuk akses Port A
+                    </td>
+                    <td>
+                        <div class="analogy-box">
+                            🎯 <strong>Analogi:</strong><br>
+                            <em>"Robot, sekarang kamu mau pencet tombol AC/Heater. Catat dulu alamat tombolnya: Port A di 0080H"</em><br><br>
+                            Seperti Anda cari remote AC, harus tahu dulu remotenya di mana (alamat Port A)
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="code">mov dx,B</span></td>
+                    <td>
+                        Salin nilai <strong>B (0082H)</strong> ke dalam register <strong>DX</strong><br><br>
+                        Setelah ini, <strong>DX = 0082H</strong><br>
+                        Siap untuk membaca sensor suhu
+                    </td>
+                    <td>
+                        <div class="analogy-box">
+                            🎯 <strong>Analogi:</strong><br>
+                            <em>"Robot, ambil termometer ya. Termometernya ada di alamat Port B (0082H)"</em><br><br>
+                            Seperti Anda cari termometer di rumah, harus tahu letaknya di mana
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="code">mov al,11111110b</span></td>
+                    <td>
+                        Masukkan nilai <strong>11111110b</strong> (254 desimal) ke dalam register <strong>AL</strong><br><br>
+                        Nilai ini adalah <strong>kode untuk nyalakan AC</strong><br>
+                        AL sekarang menyimpan kode yang siap dikirim
+                    </td>
+                    <td>
+                        <div class="analogy-box">
+                            🎯 <strong>Analogi:</strong><br>
+                            <em>"Robot, pegang kartu kode ini: 11111110. Ini kode rahasia untuk nyalakan AC!"</em><br><br>
+                            Seperti Anda pegang kunci rahasia untuk buka brankas. AL = tangan robot yang pegang kunci itu.
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="code">mov al,11111101b</span></td>
+                    <td>
+                        Masukkan nilai <strong>11111101b</strong> (253 desimal) ke dalam register <strong>AL</strong><br><br>
+                        Nilai ini adalah <strong>kode untuk nyalakan Heater</strong>
+                    </td>
+                    <td>
+                        <div class="analogy-box">
+                            🎯 <strong>Analogi:</strong><br>
+                            <em>"Robot, ganti kartunya dengan kode 11111101. Ini kode untuk nyalakan pemanas!"</em><br><br>
+                            Ganti kunci yang dipegang dengan kunci berbeda untuk buka perangkat berbeda.
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="code">mov al,11111111b</span></td>
+                    <td>
+                        Masukkan nilai <strong>11111111b</strong> (255 desimal) ke dalam register <strong>AL</strong><br><br>
+                        Nilai ini adalah <strong>kode untuk matikan semua sistem</strong>
+                    </td>
+                    <td>
+                        <div class="analogy-box">
+                            🎯 <strong>Analogi:</strong><br>
+                            <em>"Robot, pegang kartu MASTER OFF: 11111111. Ini matiin semuanya!"</em><br><br>
+                            Seperti tombol emergency shutdown yang matikan semua peralatan sekaligus.
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>2️⃣ Instruksi IN (Input = Baca/Ambil Data)</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 20%;">Kode</th>
+                    <th style="width: 40%;">Penjelasan Teknis</th>
+                    <th style="width: 40%;">Analogi Sederhana</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="code">in al,dx</span></td>
+                    <td>
+                        <strong>Baca data</strong> dari port yang alamatnya ada di <strong>DX</strong>, lalu simpan hasilnya ke <strong>AL</strong><br><br>
+                        <strong>Langkah-langkahnya:</strong>
+                        <ol>
+                            <li>Lihat alamat yang ada di DX (misal: 0082H)</li>
+                            <li>Buka port di alamat itu</li>
+                            <li>Ambil data yang ada di port tersebut</li>
+                            <li>Simpan data itu ke register AL</li>
+                        </ol>
+                    </td>
+                    <td>
+                        <div class="analogy-box">
+                            🎯 <strong>Analogi:</strong><br>
+                            <em>"Robot, sekarang buka pintu yang alamatnya sudah kamu catat tadi (DX), ambil apa yang ada di dalamnya, lalu pegang di tangan kamu (AL)!"</em><br><br>
+                            <strong>Contoh konkret:</strong><br>
+                            - Jika <span class="code">DX = Port C</span> → Robot baca tombol ON/OFF<br>
+                            - Jika <span class="code">DX = Port B</span> → Robot baca sensor suhu<br>
+                            - Hasilnya disimpan di AL (tangan robot)
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="example">
+            <strong>📌 CONTOH LENGKAP:</strong><br>
+            <span class="code">mov dx,B</span> → "Catat alamat Port B (0082H) di notes DX"<br>
+            <span class="code">in al,dx</span> → "Buka Port B, baca suhunya, simpan angka suhu di AL"<br><br>
+            <strong>Hasil:</strong> Misalnya sensor menunjukkan 20°C (dalam biner: 00010100b), maka <strong>AL = 00010100b</strong>
+        </div>
+
+        <h3>3️⃣ Instruksi OUT (Output = Kirim Data)</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 20%;">Kode</th>
+                    <th style="width: 40%;">Penjelasan Teknis</th>
+                    <th style="width: 40%;">Analogi Sederhana</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="code">out dx,al</span></td>
+                    <td>
+                        <strong>Kirim data</strong> yang ada di register <strong>AL</strong> ke port yang alamatnya ada di <strong>DX</strong><br><br>
+                        <strong>Langkah-langkahnya:</strong>
+                        <ol>
+                            <li>Lihat data yang ada di AL (misal: 11111110b)</li>
+                            <li>Lihat alamat port di DX (misal: 0080H = Port A)</li>
+                            <li>Kirim data dari AL ke port tersebut</li>
+                            <li>Port A menerima sinyal dan menyalakan AC!</li>
+                        </ol>
+                    </td>
+                    <td>
+                        <div class="analogy-box">
+                            🎯 <strong>Analogi:</strong><br>
+                            <em>"Robot, kamu sudah pegang kode rahasia di tangan (AL), sekarang masukkan kode itu ke dalam pintu yang alamatnya sudah kamu catat (DX)!"</em><br><br>
+                            <strong>Contoh konkret:</strong><br>
+                            - <span class="code">AL = 11111110b</span> (kode AC)<br>
+                            - <span class="code">DX = Port A</span><br>
+                            - <span class="code">out dx,al</span> → Kirim kode AC ke Port A<br>
+                            - <strong>Hasil:</strong> AC nyala! ❄️
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="example">
+            <strong>📌 CONTOH LENGKAP:</strong><br>
+            <span class="code">mov dx,A</span> → "Catat alamat Port A (0080H)"<br>
+            <span class="code">mov al,11111110b</span> → "Pegang kode AC: 11111110"<br>
+            <span class="code">out dx,al</span> → "Kirim kode AC ke Port A"<br><br>
+            <strong>Hasil:</strong> Port A menerima sinyal 11111110b → <strong>AC menyala!</strong> ❄️
+        </div>
+
+        <h3>4️⃣ Instruksi CMP (Compare = Bandingkan)</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 20%;">Kode</th>
+                    <th style="width: 40%;">Penjelasan Teknis</th>
+                    <th style="width: 40%;">Analogi Sederhana</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="code">cmp al,00010001b</span></td>
+                    <td>
+                        <strong>Bandingkan</strong> nilai di register <strong>AL</strong> dengan <strong>00010001b (17 desimal)</strong><br><br>
+                        Instruksi ini <strong>TIDAK mengubah nilai AL</strong>, hanya membandingkan dan menyimpan hasil perbandingan secara internal<br><br>
+                        <strong>Hasil perbandingan digunakan untuk:</strong><br>
+                        - JE (Jump if Equal) = Lompat jika sama<br>
+                        - JGE (Jump if Greater or Equal) = Lompat jika lebih besar atau sama<br>
+                        - JLE (Jump if Less or Equal) = Lompat jika lebih kecil atau sama
+                    </td>
+                    <td>
+                        <div class="analogy-box">
+                            🎯 <strong>Analogi:</strong><br>
+                            <em>"Robot, lihat angka yang kamu pegang (AL). Bandingkan dengan angka 17. Apakah sama? Lebih besar? Lebih kecil?"</em><br><br>
+                            Seperti Anda timbang badan:<br>
+                            - Berat Anda = <strong>AL</strong><br>
+                            - Berat ideal = <strong>17</strong><br>
+                            - Timbangan cuma ngasih tau: lebih berat, lebih ringan, atau pas<br>
+                            - Tapi berat Anda TIDAK berubah!
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="code">cmp al,00001011b</span></td>
+                    <td>
+                        <strong>Bandingkan</strong> nilai di register <strong>AL</strong> dengan <strong>00001011b (11 desimal)</strong><br><br>
+                        Digunakan untuk cek apakah suhu ≤ 11°C (perlu nyalakan pemanas)
+                    </td>
+                    <td>
+                        <div class="analogy-box">
+                            🎯 <strong>Analogi:</strong><br>
+                            <em>"Robot, sekarang bandingkan suhu yang kamu baca (AL) dengan angka 11. Apakah lebih dingin dari 11?"</em><br><br>
+                            Seperti cek cuaca: "Hari ini 8°C. Bandingkan dengan batas dingin 11°C. Oh, lebih dingin! Perlu jaket!"
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="code">cmp al,11111110b</span></td>
+                    <td>
+                        <strong>Bandingkan</strong> nilai di register <strong>AL</strong> dengan <strong>11111110b (254 desimal)</strong><br><br>
+                        Digunakan untuk cek apakah tombol STOP ditekan
+                    </td>
+                    <td>
+                        <div class="analogy-box">
+                            🎯 <strong>Analogi:</strong><br>
+                            <em>"Robot, cek tombol yang ditekan tadi (AL). Apakah tombol STOP (kode 11111110)?"</em><br><br>
+                            Seperti cek notifikasi HP: "Ada SMS masuk. Apakah dari bos (kode tertentu)? Kalau iya, harus baca cepat!"
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="code">cmp al,11111101b</span></td>
+                    <td>
+                        <strong>Bandingkan</strong> nilai di register <strong>AL</strong> dengan <strong>11111101b (253 desimal)</strong><br><br>
+                        Digunakan untuk cek apakah tombol START ditekan
+                    </td>
+                    <td>
+                        <div class="analogy-box">
+                            🎯 <strong>Analogi:</strong><br>
+                            <em>"Robot, apakah tombol yang ditekan adalah START (kode 11111101)?"</em><br><br>
+                            Seperti cek pintu: "Ada yang ketuk pintu. Apakah kode ketokannya: tok-tok-tok (kode START)?"
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>5️⃣ Instruksi JUMP (Lompat ke Label Lain)</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 20%;">Kode</th>
+                    <th style="width: 40%;">Penjelasan Teknis</th>
+                    <th style="width: 40%;">Analogi Sederhana</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="code">je stop1</span></td>
+                    <td>
+                        <strong>Jump if Equal</strong> = Lompat ke label <strong>stop1</strong> jika hasil perbandingan sebelumnya SAMA<br><br>
+                        Harus ada instruksi <span class="code">cmp</span> sebelumnya<br><br>
+                        <strong>Contoh:</strong><br>
+                        <span class="code">cmp al,11111110b</span><br>
+                        <span class="code">je stop1</span><br>
+                        Artinya: "Kalau AL = 11111110b, lompat ke stop1"
+                    </td>
+                    <td>
+                        <div class="analogy-box">
+                            🎯 <strong>Analogi:</strong><br>
+                            <em>"Robot, kalau hasilnya SAMA PERSIS, langsung loncat ke ruangan stop1!"</em><br><br>
+                            Seperti permainan ular tangga:<br>
+                            - Lempar dadu dapat 6 (hasil perbandingan)<br>
+                            - Kalau 6, naik tangga ke kotak "stop1"<br>
+                            - Kalau bukan 6, jalan biasa ke kotak berikutnya
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="code">jge enfriar</span></td>
+                    <td>
+                        <strong>Jump if Greater or Equal</strong> = Lompat ke label <strong>enfriar</strong> jika hasil perbandingan LEBIH BESAR ATAU SAMA<br><br>
+                        <strong>Contoh:</strong><br>
+                        <span class="code">cmp al,00010001b</span> (bandingkan dengan 17)<br>
+                        <span class="code">jge enfriar</span><br>
+                        Artinya: "Kalau AL ≥ 17, lompat ke enfriar (nyalakan AC)"
+                    </td>
+                    <td>
+                        <div class="analogy-box">
+                            🎯 <strong>Analogi:</strong><br>
+                            <em>"Robot, kalau suhunya 17°C atau lebih panas, langsung ke ruangan 'enfriar' (AC)!"</em><br><br>
+                            Seperti aturan masuk bioskop:<br>
+                            - Umur ≥ 17 tahun? Boleh nonton film dewasa (masuk ruangan enfriar)<br>
+                            - Umur < 17 tahun? Gak boleh (jalan ke ruangan lain)
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="code">jle warm</span></td>
+                    <td>
+                        <strong>Jump if Less or Equal</strong> = Lompat ke label <strong>warm</strong> jika hasil perbandingan LEBIH KECIL ATAU SAMA<br><br>
+                        <strong>Contoh:</strong><br>
+                        <span class="code">cmp al,00001011b</span> (bandingkan dengan 11)<br>
+                        <span class="code">jle warm</span><br>
+                        Artinya: "Kalau AL ≤ 11, lompat ke warm (nyalakan heater)"
+                    </td>
+                    <td>
+                        <div class="analogy-box">
+                            🎯 <strong>Analogi:</strong><br>
+                            <em>"Robot, kalau suhunya 11°C atau lebih dingin, langsung ke ruangan 'warm' (pemanas)!"</em><br><br>
+                            Seperti aturan pakai jaket:<br>
+                            - Suhu ≤ 11°C? Harus pakai jaket tebal (masuk ruangan warm)<br>
+                            - Suhu > 11°C? Gak perlu jaket (jalan ke ruangan lain)
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="code">jmp inic1</span></td>
+                    <td>
+                        <strong>Jump (tanpa syarat)</strong> = Lompat ke label <strong>inic1</strong> PASTI, tanpa melihat hasil perbandingan apapun<br><br>
+                        Digunakan untuk membuat <strong>loop</strong> (perulangan)
+                    </td>
+                    <td>
+                        <div class="analogy-box">
+                            🎯 <strong>Analogi:</strong><br>
+                            <em>"Robot, apapun yang terjadi, balik lagi ke posisi awal (inic1)!"</em><br><br>
+                            Seperti lagu "Baby Shark" yang diulang terus:<br>
+                            - Selesai 1 bait → Balik ke awal lagi<br>
+                            - Selesai lagi → Balik lagi<br>
+                            - Terus begitu sampai capek! 🎵
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>6️⃣ Instruksi NOP (No Operation = Tidak Berbuat Apa-apa)</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 20%;">Kode</th>
+                    <th style="width: 40%;">Penjelasan Teknis</th>
+                    <th style="width: 40%;">Analogi Sederhana</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="code">nop</span></td>
+                    <td>
+                        <strong>No Operation</strong> = Tidak melakukan apa-apa, hanya menunggu 1 siklus clock processor<br><br>
+                        Digunakan untuk membuat <strong>delay</strong> (jeda waktu) agar sistem punya waktu untuk merespon<br><br>
+                        <strong>Contoh:</strong><br>
+                        <span class="code">nop</span><br>
+                        <span class="code">nop</span><br>
+                        <span class="code">nop</span><br>
+                        = Tunggu 3 s

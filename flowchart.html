@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flowchart Thermostat Assembly</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.1/mermaid.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: white;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border: 2px solid #333;
+        }
+        
+        .title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #000;
+            color: #000;
+        }
+        
+        .mermaid-container {
+            width: 100%;
+            overflow-x: auto;
+            background: white;
+            padding: 20px;
+            border: 1px solid #ddd;
+        }
+        
+        .legend {
+            margin-top: 30px;
+            padding: 20px;
+            border: 2px solid #000;
+            background: #f9f9f9;
+        }
+        
+        .legend-title {
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 16px;
+            color: #000;
+        }
+        
+        .legend-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            font-size: 13px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .legend-box {
+            width: 30px;
+            height: 30px;
+            border: 2px solid #000;
+            flex-shrink: 0;
+        }
+        
+        .info-section {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f0f0f0;
+            border: 1px solid #999;
+            border-radius: 5px;
+        }
+        
+        .info-section h3 {
+            margin-bottom: 10px;
+            color: #000;
+        }
+        
+        .info-section code {
+            background: #fff;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            border: 1px solid #ccc;
+        }
+        
+        .print-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 24px;
+            background: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+        
+        .print-btn:hover {
+            background: #0052a3;
+        }
+        
+        @media print {
+            .print-btn {
+                display: none;
+            }
+            body {
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="print-btn" onclick="window.print()">🖨️ Print / Save PDF</button>
+    
+    <div class="container">
+        <div class="title">FLOWCHART PROGRAM THERMOSTAT ASSEMBLY 8086</div>
+        
+        <div class="mermaid-container">
+            <div class="mermaid">
+flowchart TD
+    Start([START]) --> Org["<b>org 100h</b><br/>(Program dimulai di alamat 100h)"]
+    
+    Org --> Init["<b>Definisi Konstanta:</b><br/>CONTROL EQU 8006H<br/>A EQU 0080H (Port Aktuator)<br/>B EQU 0082H (Port Sensor Suhu)<br/>C EQU 0084H (Port Kontrol)"]
+    
+    Init --> Inic1[/"<b>inic1:</b><br/>mov dx,C<br/>in al,dx<br/>(Baca Port C ke AL)"/]
+    
+    Inic1 --> CheckC1{"<b>cmp al,11111110b</b><br/>(Bandingkan dengan Stop signal)"}
+    CheckC1 -->|"<b>je stop1</b><br/>(Jika sama)"| Stop1Block
+    
+    CheckC1 -->|Tidak sama| CheckC2{"<b>cmp al,11111101b</b><br/>(Bandingkan dengan Start signal)"}
+    CheckC2 -->|"<b>je decision</b><br/>(Jika sama)"| DecisionBlock
+    
+    CheckC2 -->|Tidak sama| JmpInic1["<b>jmp inic1</b><br/>(Loop kembali ke inic1)"]
+    JmpInic1 --> Inic1
+    
+    DecisionBlock[/"<b>decision:</b><br/>mov dx,B<br/>in al,dx<br/>(Baca Suhu dari Port B ke AL)"/]
+    
+    DecisionBlock --> CheckTemp1{"<b>cmp al,00010001b</b><br/>(Bandingkan dengan 17)"}
+    CheckTemp1 -->|"<b>jge enfriar</b><br/>(Jika >= 17)"| EnfriarBlock
+    
+    CheckTemp1 -->|"< 17"| CheckTemp2{"<b>cmp al,00001011b</b><br/>(Bandingkan dengan 11)"}
+    CheckTemp2 -->|"<b>jle warm</b><br/>(Jika <= 11)"| WarmBlock
+    
+    CheckTemp2 -->|"11 < suhu < 17"| JmpStop["<b>jmp stop</b><br/>(Lompat ke stop)"]
+    JmpStop --> StopBlock
+    
+    EnfriarBlock["<b>enfriar:</b><br/>mov dx,A<br/>mov al,11111110b<br/>out dx,al<br/>(Kirim sinyal pendingin ke Port A)<br/><b>nop</b><br/><b>nop</b><br/><b>nop</b>"]
+    EnfriarBlock --> JmpEmerg1["<b>jmp emergency</b>"]
+    JmpEmerg1 --> EmergencyBlock
+    
+    WarmBlock["<b>warm:</b><br/>mov dx,A<br/>mov al,11111101b<br/>out dx,al<br/>(Kirim sinyal pemanas ke Port A)<br/><b>nop</b><br/><b>nop</b><br/><b>nop</b><br/><b>nop</b>"]
+    WarmBlock --> JmpEmerg2["<b>jmp emergency</b>"]
+    JmpEmerg2 --> EmergencyBlock
+    
+    StopBlock["<b>stop:</b><br/>mov dx,A<br/>mov al,11111111b<br/>out dx,al<br/>(Matikan sistem - Port A)<br/><b>nop</b><br/><b>nop</b><br/><b>nop</b>"]
+    
+    StopBlock --> ReadBStop[/"mov dx,B<br/>in al,dx<br/>(Baca ulang Port B)"/]
+    
+    ReadBStop --> CheckTemp3{"<b>cmp al,00010001b</b><br/>(Bandingkan dengan 17)"}
+    CheckTemp3 -->|"<b>jge enfriar</b><br/>(Jika >= 17)"| EnfriarBlock
+    
+    CheckTemp3 -->|"< 17"| CheckTemp4{"<b>cmp al,00001011b</b><br/>(Bandingkan dengan 11)"}
+    CheckTemp4 -->|"<b>jle warm</b><br/>(Jika <= 11)"| WarmBlock
+    
+    CheckTemp4 -->|"11 < suhu < 17"| JmpStop2["<b>jmp stop</b><br/>(Loop ke stop)"]
+    JmpStop2 --> StopBlock
+    
+    Stop1Block["<b>stop1:</b><br/>mov dx,A<br/>mov al,11111111b<br/>out dx,al<br/>(Shutdown total - Port A)<br/><b>nop</b><br/><b>nop</b><br/><b>nop</b>"]
+    
+    Stop1Block --> ReadC1[/"mov dx,C<br/>in al,dx<br/>(Baca Port C)"/]
+    
+    ReadC1 --> CheckC3{"<b>cmp al,11111110b</b><br/>(Cek apakah tetap stop)"}
+    CheckC3 -->|"<b>je stop1</b><br/>(Jika sama)"| Stop1Block
+    
+    CheckC3 -->|Tidak sama| CheckC4{"<b>cmp al,11111101b</b><br/>(Cek sinyal restart)"}
+    CheckC4 -->|"<b>je inic1</b><br/>(Jika restart)"| Inic1
+    
+    CheckC4 -->|Tidak sama| JmpStop1["<b>jmp stop1</b><br/>(Loop ke stop1)"]
+    JmpStop1 --> Stop1Block
+    
+    EmergencyBlock[/"<b>emergency:</b><br/>mov dx,C<br/>in al,dx<br/>(Monitoring Port C)"/]
+    
+    EmergencyBlock --> CheckC5{"<b>cmp al,11111110b</b><br/>(Cek emergency stop)"}
+    CheckC5 -->|"<b>je stop1</b><br/>(Emergency stop)"| Stop1Block
+    
+    CheckC5 -->|Tidak sama| CheckC6{"<b>cmp al,11111101b</b><br/>(Cek restart signal)"}
+    CheckC6 -->|"<b>je inic1</b><br/>(Restart sistem)"| Inic1
+    
+    CheckC6 -->|Tidak sama| JmpDecision["<b>jmp decision</b><br/>(Lanjut monitoring suhu)"]
+    JmpDecision --> DecisionBlock
+    
+    EmergencyBlock -.->|"(Tidak akan pernah<br/>tercapai karena<br/>infinite loop)"| RetBlock["<b>ret</b><br/>(Return - End Program)"]
+    RetBlock --> End([END])
+    
+    style Start fill:#90EE90
+    style Org fill:#E0E0E0
+    style Init fill:#E0E0E0
+    style EnfriarBlock fill:#87CEEB
+    style WarmBlock fill:#FFB6C1
+    style StopBlock fill:#FFD700
+    style Stop1Block fill:#FF6347
+    style EmergencyBlock fill:#FFA500
+    style DecisionBlock fill:#DDA0DD
+    style RetBlock fill:#D3D3D3
+    style End fill:#A9A9A9
+            </div>
+        </div>
+        
+        <div class="legend">
+            <div class="legend-title">📋 KETERANGAN WARNA DAN FUNGSI:</div>
+            <div class="legend-content">
+                <div class="legend-item">
+                    <div class="legend-box" style="background: #90EE90;"></div>
+                    <span><strong>Start/End</strong> - Awal dan Akhir Program</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-box" style="background: #E0E0E0;"></div>
+                    <span><strong>Inisialisasi</strong> - Setup dan Definisi</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-box" style="background: #87CEEB;"></div>
+                    <span><strong>enfriar</strong> - Mode Pendingin</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-box" style="background: #FFB6C1;"></div>
+                    <span><strong>warm</strong> - Mode Pemanas</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-box" style="background: #FFD700;"></div>
+                    <span><strong>stop</strong> - Mode Standby</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-box" style="background: #FF6347;"></div>
+                    <span><strong>stop1</strong> - Shutdown Total</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-box" style="background: #FFA500;"></div>
+                    <span><strong>emergency</strong> - Monitoring Darurat</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-box" style="background: #DDA0DD;"></div>
+                    <span><strong>decision</strong> - Baca Sensor Suhu</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="info-section">
+            <h3>💡 NILAI PENTING DALAM PROGRAM:</h3>
+            <ul style="line-height: 2;">
+                <li><code>00010001b</code> = <strong>17 desimal</strong> → Batas atas, aktifkan pendingin jika suhu ≥ 17°C</li>
+                <li><code>00001011b</code> = <strong>11 desimal</strong> → Batas bawah, aktifkan pemanas jika suhu ≤ 11°C</li>
+                <li><code>11111110b</code> = <strong>254 desimal</strong> → Sinyal STOP atau sinyal Pendingin</li>
+                <li><code>11111101b</code> = <strong>253 desimal</strong> → Sinyal START atau sinyal Pemanas</li>
+                <li><code>11111111b</code> = <strong>255 desimal</strong> → Matikan semua sistem (OFF)</li>
+            </ul>
+        </div>
+        
+        <div class="info-section">
+            <h3>🔌 DEFINISI PORT:</h3>
+            <ul style="line-height: 2;">
+                <li><strong>Port A (0080H)</strong> → Port Output untuk Aktuator (Pendingin/Pemanas)</li>
+                <li><strong>Port B (0082H)</strong> → Port Input untuk Sensor Suhu</li>
+                <li><strong>Port C (0084H)</strong> → Port Input untuk Kontrol Sistem (Start/Stop)</li>
+            </ul>
+        </div>
+        
+        <div class="info-section">
+            <h3>📝 ALUR KERJA PROGRAM:</h3>
+            <ol style="line-height: 2; margin-left: 20px;">
+                <li><strong>inic1:</strong> Sistem membaca Port C untuk menunggu sinyal START atau STOP</li>
+                <li><strong>decision:</strong> Jika START, sistem membaca suhu dari Port B</li>
+                <li><strong>enfriar:</strong> Jika suhu ≥ 17°C, aktifkan pendingin (AC)</li>
+                <li><strong>warm:</strong> Jika suhu ≤ 11°C, aktifkan pemanas (Heater)</li>
+                <li><strong>stop:</strong> Jika suhu antara 11-17°C, matikan sistem (standby)</li>
+                <li><strong>emergency:</strong> Monitoring terus-menerus untuk deteksi sinyal darurat</li>
+                <li><strong>stop1:</strong> Shutdown total sistem sampai ada sinyal restart</li>
+            </ol>
+        </div>
+        
+        <div class="info-section" style="background: #fff3cd; border-color: #ffc107;">
+            <h3>⚠️ CATATAN:</h3>
+            <p style="line-height: 1.8;">
+                Program ini adalah <strong>infinite loop</strong> (perulangan tak terbatas), sehingga instruksi <code>ret</code> 
+                di akhir program tidak akan pernah dieksekusi. Program akan terus berjalan untuk monitoring suhu secara real-time 
+                sampai mendapat sinyal shutdown dari Port C.
+            </p>
+        </div>
+    </div>
+    
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'linear'
+            }
+        });
+    </script>
+</body>
+</html>
